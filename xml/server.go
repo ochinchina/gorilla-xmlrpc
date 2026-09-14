@@ -5,10 +5,11 @@
 package xml
 
 import (
+	"io"
 	"bytes"
 	"encoding/xml"
 	"fmt"
-	"io/ioutil"
+	
 	"net/http"
 
 	"github.com/gorilla/rpc"
@@ -37,7 +38,7 @@ func (c *Codec) RegisterAlias(alias, method string) {
 
 // NewRequest returns a CodecRequest.
 func (c *Codec) NewRequest(r *http.Request) rpc.CodecRequest {
-	rawxml, err := ioutil.ReadAll(r.Body)
+	rawxml, err := io.ReadAll(r.Body)
 	if err != nil {
 		return &CodecRequest{err: err}
 	}

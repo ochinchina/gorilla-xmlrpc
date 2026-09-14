@@ -38,9 +38,9 @@ func rpcResponse2XML(rpc interface{}, writer io.Writer) error {
 func rpcParams2XML(rpc interface{}, writer io.Writer) error {
 	var err error
 	fmt.Fprintf(writer, "<params>")
-	for i := 0; i < reflect.ValueOf(rpc).Elem().NumField(); i++ {
+	for _, field := range reflect.ValueOf(rpc).Elem().Fields() {
 		fmt.Fprintf(writer, "<param>")
-		err = rpc2XML(reflect.ValueOf(rpc).Elem().Field(i).Interface(), writer)
+		err = rpc2XML(field.Interface(), writer)
 		fmt.Fprintf(writer, "</param>")
 	}
 	fmt.Fprintf(writer, "</params>")
@@ -115,7 +115,6 @@ func struct2XML(value interface{}, writer io.Writer) {
 		fmt.Fprintf(writer, "</member>")
 	}
 	fmt.Fprintf(writer, "</struct>")
-	return
 }
 
 func array2XML(value interface{}, writer io.Writer) {
